@@ -66,7 +66,7 @@ func (u *UserService) Login(request *dto.LoginRequest) (response dto.LoginRespon
 }
 func (u *UserService) LoginToken(request *dto.LoginRequest) (token string, err error) {
 	collection := db.GetCollectionUser("user")
-	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancle := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancle()
 	var user models.User
 	newPassowrd := u.HashPassword(request.PhoneNumber, request.Password)
@@ -90,21 +90,13 @@ func (u *UserService) LoginToken(request *dto.LoginRequest) (token string, err e
 	return token, nil
 }
 
-func (u *UserService) IsAcceptUserAccess(tokenString string) (response *dto.LoginResponse, err error) {
-	parseClaims, err := ParseToken(tokenString)
+func (u *UserService) IsAcceptUserAccess(tokenString string) (response bool, err error) {
+	_, err = ParseToken(tokenString)
 	if err != nil {
-		return nil, err
+		return false, err
 	}
-	response = &dto.LoginResponse{
-		UserId:      parseClaims.UserID,
-		Id:          parseClaims.Id,
-		PhoneNumber: parseClaims.Phone,
-		Email:       parseClaims.Email,
-		FullName:    parseClaims.FullName,
-		Role:        parseClaims.Role,
-		Point:       parseClaims.Point,
-	}
-	return response, nil
+
+	return true, nil
 }
 
 // Internal Function

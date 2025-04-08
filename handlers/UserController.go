@@ -70,13 +70,14 @@ func (u *UserController) LoginToken(c *gin.Context) {
 }
 
 func (u *UserController) IsUserVerifyAccess(c *gin.Context) {
-	tokenString := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2N2VmOTIzNmZhNzJhNTkwOTE2MWVhY2UiLCJpZCI6Nywicm9sZSI6IjEiLCJlbWFpbCI6ImFkbWluQHN0ZWFraG91c2UuY29tIiwicGhvbmUiOiIwOTA2MzcxNzAzIiwiZnVsbE5hbWUiOiJBZG1pbiIsInBvaW50IjowLCJpc3MiOiJyZXN0YXVyYW50LXVzZXItc2VydmljZSIsInN1YiI6IkF1dGhlbnRpY2F0aW9uIiwiZXhwIjoxNzQ0MTI5MDYxLCJpYXQiOjE3NDQwNDI2NjF9.1Z4A1wcUvutlNbNMVshd8_rK-YyLyzvnIC8lfyOrzl4"
-	// if err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": err})
-	// 	return
-	// }
+	tokenString, err := c.Cookie("token")
+	if err != nil || tokenString == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Can not verify user"})
+		c.Abort()
+		return
+	}
 	if u.service == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Service doesn't work!"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Service does not work!"})
 		return
 	}
 	ok, err := u.service.IsAcceptUserAccess(tokenString)
