@@ -1,4 +1,4 @@
-package models
+package dto
 
 type LoginRequest struct {
 	PhoneNumber string `json:"phone_number" bson:"phone_number"`
