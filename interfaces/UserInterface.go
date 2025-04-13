@@ -11,4 +11,5 @@ type UserInterface interface {
 	LoginToken(request *dto.LoginRequest) (response custom.Data[dto.LoginResponse], err custom.Error)
 	GetAllUser() (result []models.User, err error)
 	IsAcceptUserAccess(tokenString string) (response bool, err error)
+	GetUserByUserId(id int) (response custom.Data[dto.UserResponse], err custom.Error)
 }

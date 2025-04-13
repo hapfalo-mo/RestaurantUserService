@@ -116,8 +116,39 @@ func (u *UserService) IsAcceptUserAccess(tokenString string) (response bool, err
 	if err != nil {
 		return false, err
 	}
-
 	return true, nil
+}
+
+func (u *UserService) GetUserByUserId(id int) (response custom.Data[dto.UserResponse], err custom.Error) {
+	userCollection := db.GetCollectionUser("user")
+	ctx, cancle := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancle()
+	var user dto.UserResponse
+	filter := bson.M{
+		"id":         id,
+		"deleted_at": "",
+	}
+	userdb := userCollection.FindOne(ctx, filter).Decode(&user)
+	if userdb != nil {
+		return custom.Data[dto.UserResponse]{}, custom.Error{
+			Message:    errorList.ErrGetUserById.Error(),
+			ErrorField: userdb.Error(),
+			Field:      "UserService - GetUserByUserId",
+		}
+	}
+	userInfo := dto.UserResponse{
+		UserId:      user.UserId,
+		Id:          user.Id,
+		PhoneNumber: user.PhoneNumber,
+		Email:       user.Email,
+		FullName:    user.FullName,
+		Role:        user.Role,
+		Point:       user.Point,
+		CreatedAt:   user.CreatedAt,
+		UpdatedAt:   user.UpdatedAt,
+		DeletedAt:   user.DeletedAt,
+	}
+	return custom.Data[dto.UserResponse]{Data: userInfo}, custom.Error{}
 }
 
 // Internal Function

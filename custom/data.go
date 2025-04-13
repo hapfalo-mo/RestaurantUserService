@@ -1,5 +1,5 @@
 package custom
 
 type Data[T any] struct {
-	Data interface{}
+	Data T `json:"data"`
 }

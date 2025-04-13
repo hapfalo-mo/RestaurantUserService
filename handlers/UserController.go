@@ -6,6 +6,8 @@ import (
 	errorList "restaurantuserservice/error"
 	"restaurantuserservice/interfaces"
 	dto "restaurantuserservice/models/dto"
+	service "restaurantuserservice/repository"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -88,30 +90,66 @@ func (u *UserController) LoginToken(c *gin.Context) {
 		c.JSON(statusCode, errorResponse)
 		return
 	}
-	loginResp, okCast := ok.Data.(dto.LoginResponse)
-	if !okCast {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid response format"})
-		return
-	}
+	loginResp := ok.Data
 	c.SetCookie("token", loginResp.TokenString, 3600, "/", "localhost", false, false)
 	c.JSON(http.StatusOK, gin.H{"data": ok})
 }
 
 func (u *UserController) IsUserVerifyAccess(c *gin.Context) {
-	tokenString, err := c.Cookie("token")
-	if err != nil || tokenString == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Can not verify user"})
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		var response = custom.Error{
+			Message:    errorList.ErrCreatingToken.Error(),
+			ErrorField: "Empty AuthHeader",
+			Field:      "Authen-Token",
+		}
+		c.JSON(http.StatusUnauthorized, response)
+		c.Abort()
+		return
+	}
+	tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+	if tokenString == "" {
+		var response2 = custom.Error{
+			Message:    errorList.ErrInvalidToken.Error(),
+			ErrorField: "Invalid Token",
+			Field:      "Authen-Token",
+		}
+		c.JSON(http.StatusUnauthorized, response2)
 		c.Abort()
 		return
 	}
 	if u.service == nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Service does not work!"})
+		var response3 = custom.Error{
+			Message:    errorList.ServiceError.Error(),
+			ErrorField: "nil service",
+			Field:      "Authen-Token",
+		}
+		c.JSON(http.StatusInternalServerError, response3)
 		return
 	}
-	ok, err := u.service.IsAcceptUserAccess(tokenString)
+	_, err := u.service.IsAcceptUserAccess(tokenString)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		var response4 = custom.Error{
+			Message:    errorList.ErrCreatingToken.Error(),
+			ErrorField: err.Error(),
+			Field:      "Authen-Token",
+		}
+		c.JSON(http.StatusUnauthorized, response4)
+		c.Abort()
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": ok})
+	userToken, err := service.ParseToken(tokenString)
+	data, err2 := u.service.GetUserByUserId(userToken.Id)
+	if data.Data == (dto.UserResponse{}) {
+		c.JSON(http.StatusNotFound, err2)
+		return
+	}
+	type VerifyResponse struct {
+		IsVerify bool        `json:"isVerify"`
+		Data     interface{} `json:"data"`
+	}
+	c.JSON(http.StatusOK, VerifyResponse{
+		IsVerify: true,
+		Data:     data,
+	})
 }
