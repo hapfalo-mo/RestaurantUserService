@@ -13,8 +13,8 @@ var MongoClient *mongo.Client
 
 func ConnectDB() (*mongo.Client, error) {
 
-	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancle()
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
 	clientsOption := options.Client().ApplyURI("mongodb://localhost:27017/")
 	client, err := mongo.Connect(ctx, clientsOption)
 	// Check connection
@@ -22,7 +22,6 @@ func ConnectDB() (*mongo.Client, error) {
 		log.Fatal(err)
 		return nil, err
 	}
-
 	// Ping Db for sure
 	if err := client.Ping(ctx, nil); err != nil {
 		log.Print("Ping to mongo db faoiled :%v", err)
@@ -34,5 +33,8 @@ func ConnectDB() (*mongo.Client, error) {
 }
 
 func GetCollectionUser(name string) *mongo.Collection {
+	if MongoClient == nil {
+		log.Fatal("MongoClient is nil — did you forget to call ConnectDB?")
+	}
 	return MongoClient.Database("steakhouseuser").Collection(name)
 }

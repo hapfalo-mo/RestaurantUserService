@@ -3,6 +3,7 @@ package main
 import (
 	"restaurantuserservice/db"
 	routers "restaurantuserservice/routes"
+	"restaurantuserservice/server"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -13,6 +14,8 @@ func main() {
 	// Initialize Router
 	router := gin.Default()
 
+	// Start gRPC user service
+	go server.StartServer()
 	// CORS Middleware
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:5173"},

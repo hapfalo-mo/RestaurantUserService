@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
+	"log"
 	"restaurantuserservice/custom"
 	"restaurantuserservice/db"
 	errorList "restaurantuserservice/error"
@@ -21,9 +22,11 @@ type UserService struct{}
 
 func (u *UserService) GetAllUser() (result []models.User, err error) {
 	collection := db.GetCollectionUser("user")
-	ctx, cancle := context.WithTimeout(context.Background(), 5*time.Second)
+	log.Println(collection.Name())
+	ctx, cancle := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancle()
 	cursor, err := collection.Find(ctx, bson.M{})
+	log.Println(cursor)
 	if err != nil {
 		return nil, err
 	}
