@@ -12,7 +12,7 @@ type userserver struct {
 	restaurantuserservicerpb.UnimplementedRestaurantUserServiceServer
 }
 
-func Sum(ctx context.Context, req *restaurantuserservicerpb.SumRequest) (res *restaurantuserservicerpb.SumReponse, err error) {
+func (s *userserver) Sum(ctx context.Context, req *restaurantuserservicerpb.SumRequest) (res *restaurantuserservicerpb.SumReponse, err error) {
 	log.Println("Processing in Sum Method")
 	res = &restaurantuserservicerpb.SumReponse{
 		Result: req.GetNum1() + req.GetNum2(),
