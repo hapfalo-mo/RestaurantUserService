@@ -4,5 +4,15 @@ package restaurantuserservice;
 
 option  go_package = "RestaurantUserService/restaurantuserservicerpb";
 
-service RestaurantUserService{}
+message  SumRequest {
+    int32 num1 = 1;
+    int32 num2 = 2;
+}
+message SumReponse {
+    int32 result = 1;
+}
+service RestaurantUserService{
+  rpc  Sum(SumRequest) returns (SumReponse){}
+
+}
 

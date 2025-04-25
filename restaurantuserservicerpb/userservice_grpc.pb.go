@@ -7,7 +7,10 @@
 package restaurantuserservicerpb
 
 import (
+	context "context"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -15,10 +18,15 @@ import (
 // Requires gRPC-Go v1.64.0 or later.
 const _ = grpc.SupportPackageIsVersion9
 
+const (
+	RestaurantUserService_Sum_FullMethodName = "/restaurantuserservice.RestaurantUserService/Sum"
+)
+
 // RestaurantUserServiceClient is the client API for RestaurantUserService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RestaurantUserServiceClient interface {
+	Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumReponse, error)
 }
 
 type restaurantUserServiceClient struct {
@@ -29,10 +37,21 @@ func NewRestaurantUserServiceClient(cc grpc.ClientConnInterface) RestaurantUserS
 	return &restaurantUserServiceClient{cc}
 }
 
+func (c *restaurantUserServiceClient) Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumReponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SumReponse)
+	err := c.cc.Invoke(ctx, RestaurantUserService_Sum_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RestaurantUserServiceServer is the server API for RestaurantUserService service.
 // All implementations must embed UnimplementedRestaurantUserServiceServer
 // for forward compatibility.
 type RestaurantUserServiceServer interface {
+	Sum(context.Context, *SumRequest) (*SumReponse, error)
 	mustEmbedUnimplementedRestaurantUserServiceServer()
 }
 
@@ -43,6 +62,9 @@ type RestaurantUserServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedRestaurantUserServiceServer struct{}
 
+func (UnimplementedRestaurantUserServiceServer) Sum(context.Context, *SumRequest) (*SumReponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Sum not implemented")
+}
 func (UnimplementedRestaurantUserServiceServer) mustEmbedUnimplementedRestaurantUserServiceServer() {}
 func (UnimplementedRestaurantUserServiceServer) testEmbeddedByValue()                               {}
 
@@ -64,13 +86,36 @@ func RegisterRestaurantUserServiceServer(s grpc.ServiceRegistrar, srv Restaurant
 	s.RegisterService(&RestaurantUserService_ServiceDesc, srv)
 }
 
+func _RestaurantUserService_Sum_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SumRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RestaurantUserServiceServer).Sum(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RestaurantUserService_Sum_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RestaurantUserServiceServer).Sum(ctx, req.(*SumRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RestaurantUserService_ServiceDesc is the grpc.ServiceDesc for RestaurantUserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var RestaurantUserService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "restaurantuserservice.RestaurantUserService",
 	HandlerType: (*RestaurantUserServiceServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams:     []grpc.StreamDesc{},
-	Metadata:    "restaurantuserservicerpb/userservice.proto",
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Sum",
+			Handler:    _RestaurantUserService_Sum_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "restaurantuserservicerpb/userservice.proto",
 }
