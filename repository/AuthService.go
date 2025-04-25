@@ -2,7 +2,7 @@ package repository
 
 import (
 	"fmt"
-	models "restaurantuserservice/models"
+	models "github.com/hapfalo-mo/RestaurantUserService/models"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"

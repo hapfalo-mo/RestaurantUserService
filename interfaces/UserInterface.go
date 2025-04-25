@@ -1,9 +1,9 @@
 package interfaces
 
 import (
-	custom "restaurantuserservice/custom"
-	models "restaurantuserservice/models"
-	dto "restaurantuserservice/models/dto"
+	custom "github.com/hapfalo-mo/RestaurantUserService/custom"
+	models "github.com/hapfalo-mo/RestaurantUserService/models"
+	dto "github.com/hapfalo-mo/RestaurantUserService/models/dto"
 )
 
 type UserInterface interface {

@@ -1,10 +1,10 @@
 package server
 
 import (
+	"github.com/hapfalo-mo/RestaurantUserService/restaurantuserservicerpb"
 	"google.golang.org/grpc"
 	"log"
 	"net"
-	"restaurantuserservice/restaurantuserservicerpb"
 )
 
 type userserver struct {

@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"restaurantuserservice/handlers"
-	service "restaurantuserservice/repository"
+	"github.com/hapfalo-mo/RestaurantUserService/handlers"
+	service "github.com/hapfalo-mo/RestaurantUserService/repository"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"restaurantuserservice/db"
-	routers "restaurantuserservice/routes"
-	"restaurantuserservice/server"
+	"github.com/hapfalo-mo/RestaurantUserService/db"
+	routers "github.com/hapfalo-mo/RestaurantUserService/routes"
+	"github.com/hapfalo-mo/RestaurantUserService/server"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"

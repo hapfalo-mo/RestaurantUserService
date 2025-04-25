@@ -1,7 +1,7 @@
 package dto
 
 import (
-	models "restaurantuserservice/models"
+	models "github.com/hapfalo-mo/RestaurantUserService/models"
 )
 
 type LoginResponse struct {

@@ -1,12 +1,12 @@
 package handlers
 
 import (
+	"github.com/hapfalo-mo/RestaurantUserService/custom"
+	errorList "github.com/hapfalo-mo/RestaurantUserService/error"
+	"github.com/hapfalo-mo/RestaurantUserService/interfaces"
+	dto "github.com/hapfalo-mo/RestaurantUserService/models/dto"
+	service "github.com/hapfalo-mo/RestaurantUserService/repository"
 	"net/http"
-	"restaurantuserservice/custom"
-	errorList "restaurantuserservice/error"
-	"restaurantuserservice/interfaces"
-	dto "restaurantuserservice/models/dto"
-	service "restaurantuserservice/repository"
 	"strings"
 
 	"github.com/gin-gonic/gin"
