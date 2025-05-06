@@ -117,6 +117,94 @@ func (x *SumReponse) GetResult() int32 {
 	return 0
 }
 
+type IsVerifyUserRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IsVerifyUserRequest) Reset() {
+	*x = IsVerifyUserRequest{}
+	mi := &file_restaurantuserservicerpb_userservice_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IsVerifyUserRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IsVerifyUserRequest) ProtoMessage() {}
+
+func (x *IsVerifyUserRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_restaurantuserservicerpb_userservice_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IsVerifyUserRequest.ProtoReflect.Descriptor instead.
+func (*IsVerifyUserRequest) Descriptor() ([]byte, []int) {
+	return file_restaurantuserservicerpb_userservice_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *IsVerifyUserRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+type IsVerifyUserResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Response      bool                   `protobuf:"varint,1,opt,name=response,proto3" json:"response,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *IsVerifyUserResponse) Reset() {
+	*x = IsVerifyUserResponse{}
+	mi := &file_restaurantuserservicerpb_userservice_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *IsVerifyUserResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*IsVerifyUserResponse) ProtoMessage() {}
+
+func (x *IsVerifyUserResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_restaurantuserservicerpb_userservice_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use IsVerifyUserResponse.ProtoReflect.Descriptor instead.
+func (*IsVerifyUserResponse) Descriptor() ([]byte, []int) {
+	return file_restaurantuserservicerpb_userservice_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *IsVerifyUserResponse) GetResponse() bool {
+	if x != nil {
+		return x.Response
+	}
+	return false
+}
+
 var File_restaurantuserservicerpb_userservice_proto protoreflect.FileDescriptor
 
 const file_restaurantuserservicerpb_userservice_proto_rawDesc = "" +
@@ -128,9 +216,14 @@ const file_restaurantuserservicerpb_userservice_proto_rawDesc = "" +
 	"\x04num2\x18\x02 \x01(\x05R\x04num2\"$\n" +
 	"\n" +
 	"SumReponse\x12\x16\n" +
-	"\x06result\x18\x01 \x01(\x05R\x06result2f\n" +
+	"\x06result\x18\x01 \x01(\x05R\x06result\"+\n" +
+	"\x13IsVerifyUserRequest\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"2\n" +
+	"\x14isVerifyUserResponse\x12\x1a\n" +
+	"\bresponse\x18\x01 \x01(\bR\bresponse2\xd7\x01\n" +
 	"\x15RestaurantUserService\x12M\n" +
-	"\x03Sum\x12!.restaurantuserservice.SumRequest\x1a!.restaurantuserservice.SumReponse\"\x00B0Z.RestaurantUserService/restaurantuserservicerpbb\x06proto3"
+	"\x03Sum\x12!.restaurantuserservice.SumRequest\x1a!.restaurantuserservice.SumReponse\"\x00\x12o\n" +
+	"\x12IsAcceptUserAccess\x12*.restaurantuserservice.IsVerifyUserRequest\x1a+.restaurantuserservice.isVerifyUserResponse\"\x00B0Z.RestaurantUserService/restaurantuserservicerpbb\x06proto3"
 
 var (
 	file_restaurantuserservicerpb_userservice_proto_rawDescOnce sync.Once
@@ -144,16 +237,20 @@ func file_restaurantuserservicerpb_userservice_proto_rawDescGZIP() []byte {
 	return file_restaurantuserservicerpb_userservice_proto_rawDescData
 }
 
-var file_restaurantuserservicerpb_userservice_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_restaurantuserservicerpb_userservice_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_restaurantuserservicerpb_userservice_proto_goTypes = []any{
-	(*SumRequest)(nil), // 0: restaurantuserservice.SumRequest
-	(*SumReponse)(nil), // 1: restaurantuserservice.SumReponse
+	(*SumRequest)(nil),           // 0: restaurantuserservice.SumRequest
+	(*SumReponse)(nil),           // 1: restaurantuserservice.SumReponse
+	(*IsVerifyUserRequest)(nil),  // 2: restaurantuserservice.IsVerifyUserRequest
+	(*IsVerifyUserResponse)(nil), // 3: restaurantuserservice.isVerifyUserResponse
 }
 var file_restaurantuserservicerpb_userservice_proto_depIdxs = []int32{
 	0, // 0: restaurantuserservice.RestaurantUserService.Sum:input_type -> restaurantuserservice.SumRequest
-	1, // 1: restaurantuserservice.RestaurantUserService.Sum:output_type -> restaurantuserservice.SumReponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	2, // 1: restaurantuserservice.RestaurantUserService.IsAcceptUserAccess:input_type -> restaurantuserservice.IsVerifyUserRequest
+	1, // 2: restaurantuserservice.RestaurantUserService.Sum:output_type -> restaurantuserservice.SumReponse
+	3, // 3: restaurantuserservice.RestaurantUserService.IsAcceptUserAccess:output_type -> restaurantuserservice.isVerifyUserResponse
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -170,7 +267,7 @@ func file_restaurantuserservicerpb_userservice_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_restaurantuserservicerpb_userservice_proto_rawDesc), len(file_restaurantuserservicerpb_userservice_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

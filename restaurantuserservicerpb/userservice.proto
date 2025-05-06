@@ -11,8 +11,14 @@ message  SumRequest {
 message SumReponse {
     int32 result = 1;
 }
+message IsVerifyUserRequest{
+    string token = 1;
+}
+message isVerifyUserResponse{
+    bool response = 1;
+}
 service RestaurantUserService{
   rpc  Sum(SumRequest) returns (SumReponse){}
-
+  rpc  IsAcceptUserAccess(IsVerifyUserRequest) returns (isVerifyUserResponse){}
 }
 

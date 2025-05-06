@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	RestaurantUserService_Sum_FullMethodName = "/restaurantuserservice.RestaurantUserService/Sum"
+	RestaurantUserService_Sum_FullMethodName                = "/restaurantuserservice.RestaurantUserService/Sum"
+	RestaurantUserService_IsAcceptUserAccess_FullMethodName = "/restaurantuserservice.RestaurantUserService/IsAcceptUserAccess"
 )
 
 // RestaurantUserServiceClient is the client API for RestaurantUserService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RestaurantUserServiceClient interface {
 	Sum(ctx context.Context, in *SumRequest, opts ...grpc.CallOption) (*SumReponse, error)
+	IsAcceptUserAccess(ctx context.Context, in *IsVerifyUserRequest, opts ...grpc.CallOption) (*IsVerifyUserResponse, error)
 }
 
 type restaurantUserServiceClient struct {
@@ -47,11 +49,22 @@ func (c *restaurantUserServiceClient) Sum(ctx context.Context, in *SumRequest, o
 	return out, nil
 }
 
+func (c *restaurantUserServiceClient) IsAcceptUserAccess(ctx context.Context, in *IsVerifyUserRequest, opts ...grpc.CallOption) (*IsVerifyUserResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(IsVerifyUserResponse)
+	err := c.cc.Invoke(ctx, RestaurantUserService_IsAcceptUserAccess_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RestaurantUserServiceServer is the server API for RestaurantUserService service.
 // All implementations must embed UnimplementedRestaurantUserServiceServer
 // for forward compatibility.
 type RestaurantUserServiceServer interface {
 	Sum(context.Context, *SumRequest) (*SumReponse, error)
+	IsAcceptUserAccess(context.Context, *IsVerifyUserRequest) (*IsVerifyUserResponse, error)
 	mustEmbedUnimplementedRestaurantUserServiceServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedRestaurantUserServiceServer struct{}
 
 func (UnimplementedRestaurantUserServiceServer) Sum(context.Context, *SumRequest) (*SumReponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Sum not implemented")
+}
+func (UnimplementedRestaurantUserServiceServer) IsAcceptUserAccess(context.Context, *IsVerifyUserRequest) (*IsVerifyUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method IsAcceptUserAccess not implemented")
 }
 func (UnimplementedRestaurantUserServiceServer) mustEmbedUnimplementedRestaurantUserServiceServer() {}
 func (UnimplementedRestaurantUserServiceServer) testEmbeddedByValue()                               {}
@@ -104,6 +120,24 @@ func _RestaurantUserService_Sum_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RestaurantUserService_IsAcceptUserAccess_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IsVerifyUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RestaurantUserServiceServer).IsAcceptUserAccess(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RestaurantUserService_IsAcceptUserAccess_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RestaurantUserServiceServer).IsAcceptUserAccess(ctx, req.(*IsVerifyUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RestaurantUserService_ServiceDesc is the grpc.ServiceDesc for RestaurantUserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var RestaurantUserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Sum",
 			Handler:    _RestaurantUserService_Sum_Handler,
+		},
+		{
+			MethodName: "IsAcceptUserAccess",
+			Handler:    _RestaurantUserService_IsAcceptUserAccess_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
